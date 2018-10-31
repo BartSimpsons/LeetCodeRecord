@@ -1,0 +1,626 @@
+//
+//  Solution.swift
+//  Test
+//
+//  Created by Bart Simpson on 2018/10/11.
+//  Copyright © 2018年 BartSimpson. All rights reserved.
+//
+
+import UIKit
+
+public class ListNode {
+    public var val: Int
+    public var next: ListNode?
+    public init(_ val: Int) {
+        self.val = val
+        self.next = nil
+    }
+}
+
+public class TreeNode {
+    public var val: Int
+    public var left: TreeNode?
+    public var right: TreeNode?
+    public init(_ val: Int) {
+        self.val = val
+        self.left = nil
+        self.right = nil
+    }
+}
+
+/// 简单合集
+class Solution {
+    /// 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
+    func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
+        
+        for i in 0..<nums.count{
+            
+            for j in i+1..<nums.count{
+                
+                if (target - nums[i] == nums[j]) {
+                    return [i, j]
+                }
+            }
+        }
+        
+        return [Int]()
+    }
+    
+    
+    public func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let dummyHead = ListNode.init(0)
+        var p = l1, q = l2, curr = dummyHead
+        var carry = 0
+        while (p != nil || q != nil) {
+            let x = p != nil ? p?.val : 0
+            let y = q != nil ? q?.val : 0
+            let sum = carry + x! + y!
+            carry = sum / 10
+            curr.next = ListNode.init(sum % 10)
+            curr = curr.next!
+            if p != nil { p = p?.next }
+            if q != nil { q = q?.next }
+        }
+        if carry > 0 {
+            curr.next = ListNode.init(carry)
+        }
+        print(dummyHead.val)
+        return dummyHead.next
+    }
+    
+    
+    public func reverse(_ x: Int) -> Int {
+        var x = x
+        var rev = 0
+        while x != 0 {
+            let p = x % 10
+            x /= 10
+            if (rev > Int32.max/10 || (rev == Int32.max/10 && p > 7)){
+                return 0
+            }
+            if (rev < Int32.min/10 || (rev == Int32.min/10 && p < -8)){
+                return 0
+            }
+            rev = rev * 10 + p
+        }
+        return rev
+    }
+    
+    func isPalindrome(_ p: Int) -> Bool {
+        
+        if p < 0 || (p % 10 == 0 && p != 0){
+            return false
+        }
+        var x = p
+        var rev = 0
+        while x > rev {
+            rev = rev * 10 + x % 10
+            x /= 10
+        }
+        return x == rev || x == rev/10
+    }
+    
+    func removeDuplicates(_ nums: inout [Int]) -> Int {
+        
+        guard nums.count > 0 else {
+            return 0
+        }
+        var cou = 0
+        for i in 1..<nums.count {
+            
+            if nums[i] != nums[cou] {
+                cou += 1
+                nums[cou] = nums[i]
+            }
+        }
+        nums.removeSubrange(cou+1..<nums.count)
+        return nums.count
+    }
+    
+    func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
+        if nums.count == 0 { return 0 }
+        
+        var countArr = [Int]()
+        for (i, value) in nums.enumerated() {
+            if value == val {
+                countArr.append(i)
+            }
+        }
+        for index in countArr.reversed() {
+            nums.remove(at: index)
+        }
+        return nums.count
+    }
+    
+    func removeElement2(_ nums: inout [Int], _ val: Int) -> Int {
+        
+        var i = 0
+        for j in 0..<nums.count {
+            if nums[j] != val {
+                nums[i] = nums[j]
+                i += 1
+            }
+        }
+        nums.removeSubrange(i..<nums.count)
+        return i
+    }
+    
+    func longestCommonPrefix(_ strs: [String]) -> String {
+        
+        if strs.count == 0 { return "" }
+        var prefix = strs[0]
+        
+        for i in 0..<strs.count {
+            while !strs[i].hasPrefix(prefix){
+                
+                prefix.removeLast()
+                if prefix.isEmpty { return "" }
+            }
+        }
+        return prefix
+    }
+    
+    /// 做不出来 give up
+    func lengthOfLongestSubstring(_ s: String) -> Int {
+        
+        if s.count == 0 { return 0 }
+        var maxLength = 0
+        var record = 0
+        var nowChar:Character?
+        for char in s {
+            if char != nowChar{
+                record += 1
+                nowChar = char
+            }else{
+                if record > maxLength {
+                    maxLength = record
+                }
+                record = 1
+            }
+        }
+        return maxLength
+    }
+    
+    
+    func isValid(_ s: String) -> Bool {
+        
+        if  s == "" { return true }
+        if s.count % 2 != 0 { return false }
+        let closeMap = [")":"(", "}":"{", "]":"["]
+        var charStack = [String]()
+        for i in 0..<s.count {
+            let curChar = s.subString(start: i, length: 1)
+            var topElement = ""
+            if closeMap[curChar] != nil{
+                topElement = charStack.count == 0 ? "#" : charStack.removeLast()
+                if topElement != closeMap[curChar] { return false }
+            }else{
+                charStack.append(curChar)
+            }
+        }
+        return charStack.count == 0
+    }
+    
+    func isValidForQucik(_ s:String) -> Bool {
+        var arr = Array<String>()
+        for i in s{
+            if i == "(" || i == "[" || i == "{" {
+                arr.append(String(i))
+            }else{
+                if arr.count == 0{
+                    return false
+                }
+                let f = arr.last!
+                if i == ")"{
+                    if f != "("{
+                        return false
+                    }
+                }
+                if i == "]"{
+                    if f != "["{
+                        return false
+                    }
+                }
+                if i == "}"{
+                    if f != "{"{
+                        return false
+                    }
+                }
+                arr.removeLast()
+            }
+        }
+        return arr.count == 0
+    }
+    
+    func mergeTwoListsForMe(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        let out = ListNode.init(0)
+        var cur:ListNode? = out
+        var numArr = [Int]()
+        var l1 = l1
+        var l2 = l2
+        while l1 != nil {
+            numArr.append(l1!.val)
+            l1 = l1?.next
+        }
+        while l2 != nil {
+            numArr.append(l2!.val)
+            l2 = l2?.next
+        }
+        numArr.sort()
+        
+        for i in 0..<numArr.count {
+            
+            cur?.next = ListNode.init(numArr[i])
+            cur = cur?.next
+        }
+        return out.next
+    }
+    
+    func mergeTwoLists(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        guard let l1 = l1 else {
+            return l2
+        }
+        guard let l2 = l2 else {
+            return l1
+        }
+        if l1.val >= l2.val {
+            l2.next = mergeTwoLists(l1, l2.next)
+            return l2
+        }else{
+            l1.next = mergeTwoLists(l1.next, l2)
+            return l1
+        }
+        
+    }
+    // 1 2 4  // 1 3 4
+    
+    func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        var l1 = l1
+        var l2 = l2
+        if l1 == nil {
+            return l2
+        }
+        if l2 == nil {
+            return l1
+        }
+        let res:ListNode = ListNode.init(0)
+        var cur:ListNode? = res
+        
+        while l1 != nil && l2 != nil {
+            /*
+             输出结果要求从小到大排序
+             如果l1的值小，把l1加入新的链表 并把l1的链表头去掉，再循环
+             */
+            if l1!.val <= l2!.val {
+                cur?.next = l1
+                
+                l1 = l1?.next
+            }else{
+                cur?.next = l2
+                l2 = l2?.next
+            }
+            /*
+             cur拷贝了res的next属性地址，所以每次修改cur.nextd值，res.next也会改变
+             同时cur = cur?.next，所以执行cur = cur?.next时  cur的指针指向了下一个
+             */
+            cur = cur?.next
+        }
+        cur?.next = l1 == nil ? l2 : l1
+        return res.next
+    }
+    
+    func searchInsert(_ nums: [Int], _ target: Int) -> Int {
+        if target == 0 { return 0 }
+        var i = 0
+        for num in nums{
+            if num == target {
+                break
+            }else if num > target{
+                break
+            }else{
+                i += 1
+            }
+        }
+        return i
+    }
+    
+    func lengthOfLastWord(_ s: String) -> Int {
+        
+        var len = 0
+        for str in s.reversed() {
+            if str != " "{
+                len += 1
+            }
+            if str == " " && len != 0 {
+                break
+            }
+        }
+        return len
+    }
+    
+    func maxSubArray(_ nums: [Int]) -> Int {
+        
+        var max = Int.min, sum = 0
+        for i in 0..<nums.count {
+            
+            if sum < 0 {
+                sum = nums[i]
+            }else{
+                sum += nums[i]
+            }
+            if max < sum {
+                max = sum
+            }
+        }
+        return max
+    }
+    
+    func maxSubArray2(_ nums: [Int]) -> Int {
+        var cou = [Int].init(repeating: 0, count: nums.count)
+        var sum = nums[0]
+        cou[0] = nums[0]
+        for i in 1..<nums.count {
+            cou[i] = max(cou[i-1] + nums[i], nums[i])
+            sum = max(sum, cou[i])
+        }
+        return sum
+    }
+    
+    func plusOne(_ digits: [Int]) -> [Int] {
+        if digits.count == 0 { return [1] }
+        var plus = digits
+        let len = digits.count - 1
+        
+        if digits[len] != 9 {
+            plus[len] = digits[len] + 1
+            return plus
+        }else{
+            plus.removeLast()
+            plus = plusOne(plus)
+            plus.append(0)
+            return plus
+        }
+    }
+    
+    func plusOne2(_ digits: [Int]) -> [Int] {
+        var nums = digits
+        let last = nums[nums.count - 1]
+        if last != 9 {
+            nums[nums.count - 1] = last + 1
+            return nums
+        }
+        
+        var index = nums.count - 1
+        while index >= 0 {
+            if nums[index] == 9 {
+                nums[index] = 0
+            } else {
+                nums[index] = nums[index] + 1
+                return nums
+            }
+            index -= 1
+        }
+        nums.insert(1, at: 0)
+        return nums
+    }
+
+    func mySqrt(_ x: Int) -> Int {
+        var num = Double(x)
+        num = sqrt(num)
+        return Int(num)
+    }
+    
+    func mySqrt2(_ x: Int) -> Int {
+        var left = 0
+        var right = x / 2 + 1
+        while left <= right {
+            let mid = (left + right) / 2
+            let val = mid * mid
+            if val == x {
+                return mid
+            } else if val < x {
+                left = mid + 1
+            } else {
+                right = mid - 1
+            }
+        }
+        return right
+    }
+    
+    func climbStairsTooSlow(_ n: Int) -> Int {
+        if n == 1 || n <= 0{
+            return 1
+        }else if n == 2 {
+            return 2
+        }else{
+            return climbStairs(n-1) + climbStairs(n)
+        }
+    }
+    
+    func climbStairs(_ n: Int) -> Int {
+        /// 0竟然要输出1？？？ 特意写这个判断
+        if n == 1 || n <= 0{
+            return 1
+        }else if n == 2 {
+            return 2
+        }else{
+            var f1 = 1
+            var f2 = 2
+            var f3 = 0
+            for _ in 2..<n {
+                f3 = f1 + f2
+                f1 = f2
+                f2 = f3
+            }
+            return f3
+        }
+    }
+    
+    func climbStairs2(_ n: Int) -> Int {
+        var f1 = 1, f2 = 2, sum = n
+        if n <= f2 { return sum }
+        for _ in 3...n {
+            sum = f1 + f2
+            f1 = f2
+            f2 = sum
+        }
+        return sum
+    }
+    
+    /// 二进制求和
+    func addBinary(_ a: String, _ b: String) -> String {
+        var arr1 = [Int]()
+        for c in a {
+            arr1.append(Int(String.init(c))!)
+        }
+        var arr2 = [Int]()
+        for c in b.unicodeScalars {
+            arr2.append(Int(String.init(c))!)
+        }
+        if arr1.count > arr2.count {
+            return addBinaryWithArr(arr1, short: arr2)
+        }
+        return addBinaryWithArr(arr2, short: arr1)
+    }
+    
+    func addBinaryWithArr(_ long:[Int], short:[Int]) -> String {
+        
+        func toString(_ array:[Int]) -> String {
+            var str = ""
+            for num in array {
+                str += "\(num)"
+            }
+            return str
+        }
+        
+        var long = long
+        var target = 0
+        var initIndex = long.count - short.count
+        var i = short.count-1
+        while i >= 0 {
+            let temp = long[initIndex + i] + short[i] + target
+            if temp > 1 {
+                /// 有进位
+                long[initIndex + i] = temp - 2
+                target = 1
+            }else{
+                /// 无进位
+                long[initIndex + i] = temp
+                target = 0
+            }
+            i -= 1
+        }
+        
+        if target == 0 {
+            return toString(long)
+        }
+        
+        var j = initIndex - 1
+        while j >= 0 {
+            if long[j] == 0 {
+                long[j] = 1
+                return toString(long)
+            }
+            long[j] -= 1
+            j -= 1
+        }
+        return "1" + toString(long)
+    }
+    
+    func deleteDuplicates(_ head: ListNode?) -> ListNode? {
+        var last = head
+        var current = head?.next
+        while current != nil {
+            if current?.val == last?.val {
+                current = current?.next
+            }else {
+                /// 改变了head.next
+                last?.next = current
+                /// 只改变了last
+                last = current
+                current = current?.next
+            }
+        }
+        /// 改变了head.next
+        last?.next = nil
+        return head
+    }
+    
+    func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        
+        for i in m..<m+n {
+            nums1[i] = nums2[i-m]
+        }
+        nums1 = nums1.sorted()
+    }
+    /**
+     * 思路：从尾部开始合并，避免覆盖
+     * 时间复杂度：O(n)，空间复杂度：O(1)
+     */
+    func merge2(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
+        
+        var i = m - 1, j = n - 1
+        while i >= 0 || j >= 0 {
+            if j < 0 || (i >= 0 && nums1[i] > nums2[j]) {
+                nums1[i + j + 1] = nums1[i]
+                i -= 1
+            } else {
+                nums1[i + j + 1] = nums2[j]
+                j -= 1
+            }
+        }
+    }
+    
+    func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
+        if p?.val != q?.val {
+            return false
+        }
+        if p?.left == nil && q?.left == nil && p?.right == nil && q?.right == nil {
+            return true
+        }else{
+            return isSameTree(p?.left, q?.left) && isSameTree(p?.right, q?.right)
+        }
+    }
+    
+    func isSymmetric(_ root: TreeNode?) -> Bool {
+        if root == nil || (root?.left == nil && root?.right == nil) {
+            return true
+        }
+        return isSymmetric(root?.left, root?.right)
+    }
+    
+    func isSymmetric(_ left: TreeNode?, _ right: TreeNode?) -> Bool {
+        if left == nil && right == nil {
+            return true
+        }
+        if left == nil || right == nil || left?.val != right?.val {
+            return false
+        }
+        return isSymmetric(left?.left, right?.right) && isSymmetric(left?.right, right?.left)
+    }
+    
+    /// 二叉树的最大深度
+    func maxDepth(_ root: TreeNode?) -> Int {
+        guard let root = root else {
+            return 0
+        }
+        return max(maxDepth(root.left), maxDepth(root.right)) + 1
+    }
+    
+    
+    
+    /* 这是底线 */
+}
+
+extension String {
+    //根据开始位置和长度截取字符串
+    func subString(start:Int, length:Int = -1) -> String {
+        var len = length
+        if len == -1 {
+            len = self.count - start
+        }
+        let st = self.index(startIndex, offsetBy:start)
+        let en = self.index(st, offsetBy:len)
+        return String(self[st ..< en])
+    }
+}
