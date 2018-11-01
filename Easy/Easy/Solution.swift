@@ -30,24 +30,22 @@ public class TreeNode {
 
 /// 简单合集
 class Solution {
-    /// 给定一个整数数组和一个目标值，找出数组中和为目标值的两个数。
+    /// 1.两数之和
     func twoSum(_ nums: [Int], _ target: Int) -> [Int] {
         
         for i in 0..<nums.count{
-            
             for j in i+1..<nums.count{
-                
                 if (target - nums[i] == nums[j]) {
                     return [i, j]
                 }
             }
         }
-        
         return [Int]()
     }
     
-    
+    /// 2.两数相加 中等难度乱入
     public func addTwoNumbers(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
+        
         let dummyHead = ListNode.init(0)
         var p = l1, q = l2, curr = dummyHead
         var carry = 0
@@ -68,8 +66,9 @@ class Solution {
         return dummyHead.next
     }
     
-    
+    /// 7.反转整数
     public func reverse(_ x: Int) -> Int {
+        
         var x = x
         var rev = 0
         while x != 0 {
@@ -86,6 +85,7 @@ class Solution {
         return rev
     }
     
+    /// 9.回文数
     func isPalindrome(_ p: Int) -> Bool {
         
         if p < 0 || (p % 10 == 0 && p != 0){
@@ -100,56 +100,33 @@ class Solution {
         return x == rev || x == rev/10
     }
     
-    func removeDuplicates(_ nums: inout [Int]) -> Int {
+    /// 13.罗马数字转整数
+    func romanToInt(_ s: String) -> Int {
         
-        guard nums.count > 0 else {
-            return 0
+        var res = 0
+        var dic:[String:Int] = ["I":1, "V":5, "X":10, "L":50, "C":100, "D":500, "M":1000]
+        var arr = [String]()
+        for str in s {
+            arr.append(String.init(str))
         }
-        var cou = 0
-        for i in 1..<nums.count {
-            
-            if nums[i] != nums[cou] {
-                cou += 1
-                nums[cou] = nums[i]
+        for i in 0..<arr.count {
+            /// 肯定有值，强转就好
+            let val = dic[arr[i]]!
+            if i == arr.count - 1 || (dic[arr[i+1]]! <= dic[arr[i]]!){
+                res += val
+            }else{
+                res -= val
             }
         }
-        nums.removeSubrange(cou+1..<nums.count)
-        return nums.count
+        return res
     }
     
-    func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
-        if nums.count == 0 { return 0 }
-        
-        var countArr = [Int]()
-        for (i, value) in nums.enumerated() {
-            if value == val {
-                countArr.append(i)
-            }
-        }
-        for index in countArr.reversed() {
-            nums.remove(at: index)
-        }
-        return nums.count
-    }
     
-    func removeElement2(_ nums: inout [Int], _ val: Int) -> Int {
-        
-        var i = 0
-        for j in 0..<nums.count {
-            if nums[j] != val {
-                nums[i] = nums[j]
-                i += 1
-            }
-        }
-        nums.removeSubrange(i..<nums.count)
-        return i
-    }
-    
+    /// 14.最长公共前缀
     func longestCommonPrefix(_ strs: [String]) -> String {
         
         if strs.count == 0 { return "" }
         var prefix = strs[0]
-        
         for i in 0..<strs.count {
             while !strs[i].hasPrefix(prefix){
                 
@@ -159,29 +136,8 @@ class Solution {
         }
         return prefix
     }
-    
-    /// 做不出来 give up
-    func lengthOfLongestSubstring(_ s: String) -> Int {
-        
-        if s.count == 0 { return 0 }
-        var maxLength = 0
-        var record = 0
-        var nowChar:Character?
-        for char in s {
-            if char != nowChar{
-                record += 1
-                nowChar = char
-            }else{
-                if record > maxLength {
-                    maxLength = record
-                }
-                record = 1
-            }
-        }
-        return maxLength
-    }
-    
-    
+   
+    /// 20.有效的括号
     func isValid(_ s: String) -> Bool {
         
         if  s == "" { return true }
@@ -232,6 +188,7 @@ class Solution {
         return arr.count == 0
     }
     
+    /// 21.合并两个有序链表
     func mergeTwoListsForMe(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
         let out = ListNode.init(0)
         var cur:ListNode? = out
@@ -270,9 +227,7 @@ class Solution {
             l1.next = mergeTwoLists(l1.next, l2)
             return l1
         }
-        
     }
-    // 1 2 4  // 1 3 4
     
     func mergeTwoLists2(_ l1: ListNode?, _ l2: ListNode?) -> ListNode? {
         var l1 = l1
@@ -309,6 +264,112 @@ class Solution {
         return res.next
     }
     
+    /// 26.删除排序数组中的重复项
+    func removeDuplicates(_ nums: inout [Int]) -> Int {
+        
+        guard nums.count > 0 else {
+            return 0
+        }
+        var cou = 0
+        for i in 1..<nums.count {
+            
+            if nums[i] != nums[cou] {
+                cou += 1
+                nums[cou] = nums[i]
+            }
+        }
+        nums.removeSubrange(cou+1..<nums.count)
+        return nums.count
+    }
+    
+    
+    /// 27.移除元素
+    func removeElement(_ nums: inout [Int], _ val: Int) -> Int {
+        
+        if nums.count == 0 { return 0 }
+        var countArr = [Int]()
+        for (i, value) in nums.enumerated() {
+            if value == val {
+                countArr.append(i)
+            }
+        }
+        for index in countArr.reversed() {
+            nums.remove(at: index)
+        }
+        return nums.count
+    }
+    
+    func removeElement2(_ nums: inout [Int], _ val: Int) -> Int {
+        
+        var i = 0
+        for j in 0..<nums.count {
+            if nums[j] != val {
+                nums[i] = nums[j]
+                i += 1
+            }
+        }
+        nums.removeSubrange(i..<nums.count)
+        return i
+    }
+    
+    /// 28.实现strStr()    4484ms解答 for me =。=
+    func strStrForMe(_ haystack: String, _ needle: String) -> Int {
+        let num = needle.count
+        if num == 0 {
+            return 0
+        }
+        for i in 0..<haystack.count {
+            if (i + num <= haystack.count) && (haystack.subString(start: i, length: num) == needle) {
+                return i
+            }
+        }
+        return -1
+    }
+    
+    /// 16ms解答
+    func strStr(_ haystack: String, _ needle: String) -> Int {
+        let count1 = haystack.count
+        let count2 = needle.count
+        if count2 == 0 {
+            return 0
+        }
+        
+        if count1 < count2 {
+            return -1
+        }
+        
+        var haystackChars = haystack.cString(using: .utf8)!
+        var needleChars = needle.cString(using: .utf8)!
+        var i = 0
+        var j = 0
+        
+        let maxi = count1 - count2
+        let maxj = count2 - 1
+        
+        while i <= maxi && j <= maxj {
+            var m = i
+            while m <= count1 - 1 && j <= maxj {
+                let mv = haystackChars[m]
+                let jv = needleChars[j]
+                if mv == jv {
+                    m += 1
+                    j += 1
+                    continue
+                }
+                j = 0
+                i += 1
+                break
+            }
+        }
+        j = j - 1
+        if j == maxj{
+            return i
+        }
+        
+        return -1
+    }
+    
+    /// 35.搜索插入位置
     func searchInsert(_ nums: [Int], _ target: Int) -> Int {
         if target == 0 { return 0 }
         var i = 0
@@ -324,20 +385,7 @@ class Solution {
         return i
     }
     
-    func lengthOfLastWord(_ s: String) -> Int {
-        
-        var len = 0
-        for str in s.reversed() {
-            if str != " "{
-                len += 1
-            }
-            if str == " " && len != 0 {
-                break
-            }
-        }
-        return len
-    }
-    
+    /// 53.最大子序和
     func maxSubArray(_ nums: [Int]) -> Int {
         
         var max = Int.min, sum = 0
@@ -366,6 +414,22 @@ class Solution {
         return sum
     }
     
+    /// 58.最后一个单词的长度
+    func lengthOfLastWord(_ s: String) -> Int {
+        
+        var len = 0
+        for str in s.reversed() {
+            if str != " "{
+                len += 1
+            }
+            if str == " " && len != 0 {
+                break
+            }
+        }
+        return len
+    }
+
+    /// 66.加一
     func plusOne(_ digits: [Int]) -> [Int] {
         if digits.count == 0 { return [1] }
         var plus = digits
@@ -403,7 +467,68 @@ class Solution {
         nums.insert(1, at: 0)
         return nums
     }
+    
+    /// 二进制求和
+    func addBinary(_ a: String, _ b: String) -> String {
+        var arr1 = [Int]()
+        for c in a {
+            arr1.append(Int(String.init(c))!)
+        }
+        var arr2 = [Int]()
+        for c in b.unicodeScalars {
+            arr2.append(Int(String.init(c))!)
+        }
+        if arr1.count > arr2.count {
+            return addBinaryWithArr(arr1, short: arr2)
+        }
+        return addBinaryWithArr(arr2, short: arr1)
+    }
+    
+    func addBinaryWithArr(_ long:[Int], short:[Int]) -> String {
+        
+        func toString(_ array:[Int]) -> String {
+            var str = ""
+            for num in array {
+                str += "\(num)"
+            }
+            return str
+        }
+        
+        var long = long
+        var target = 0
+        let initIndex = long.count - short.count
+        var i = short.count-1
+        while i >= 0 {
+            let temp = long[initIndex + i] + short[i] + target
+            if temp > 1 {
+                /// 有进位
+                long[initIndex + i] = temp - 2
+                target = 1
+            }else{
+                /// 无进位
+                long[initIndex + i] = temp
+                target = 0
+            }
+            i -= 1
+        }
+        
+        if target == 0 {
+            return toString(long)
+        }
+        
+        var j = initIndex - 1
+        while j >= 0 {
+            if long[j] == 0 {
+                long[j] = 1
+                return toString(long)
+            }
+            long[j] -= 1
+            j -= 1
+        }
+        return "1" + toString(long)
+    }
 
+    /// 69.x的平方根  直接调用系统方法=。=
     func mySqrt(_ x: Int) -> Int {
         var num = Double(x)
         num = sqrt(num)
@@ -427,6 +552,7 @@ class Solution {
         return right
     }
     
+    /// 70.爬楼梯  递归  超级慢速不能过的解答
     func climbStairsTooSlow(_ n: Int) -> Int {
         if n == 1 || n <= 0{
             return 1
@@ -467,66 +593,7 @@ class Solution {
         return sum
     }
     
-    /// 二进制求和
-    func addBinary(_ a: String, _ b: String) -> String {
-        var arr1 = [Int]()
-        for c in a {
-            arr1.append(Int(String.init(c))!)
-        }
-        var arr2 = [Int]()
-        for c in b.unicodeScalars {
-            arr2.append(Int(String.init(c))!)
-        }
-        if arr1.count > arr2.count {
-            return addBinaryWithArr(arr1, short: arr2)
-        }
-        return addBinaryWithArr(arr2, short: arr1)
-    }
-    
-    func addBinaryWithArr(_ long:[Int], short:[Int]) -> String {
-        
-        func toString(_ array:[Int]) -> String {
-            var str = ""
-            for num in array {
-                str += "\(num)"
-            }
-            return str
-        }
-        
-        var long = long
-        var target = 0
-        var initIndex = long.count - short.count
-        var i = short.count-1
-        while i >= 0 {
-            let temp = long[initIndex + i] + short[i] + target
-            if temp > 1 {
-                /// 有进位
-                long[initIndex + i] = temp - 2
-                target = 1
-            }else{
-                /// 无进位
-                long[initIndex + i] = temp
-                target = 0
-            }
-            i -= 1
-        }
-        
-        if target == 0 {
-            return toString(long)
-        }
-        
-        var j = initIndex - 1
-        while j >= 0 {
-            if long[j] == 0 {
-                long[j] = 1
-                return toString(long)
-            }
-            long[j] -= 1
-            j -= 1
-        }
-        return "1" + toString(long)
-    }
-    
+    /// 83.删除排序链表中的重复元素
     func deleteDuplicates(_ head: ListNode?) -> ListNode? {
         var last = head
         var current = head?.next
@@ -546,6 +613,7 @@ class Solution {
         return head
     }
     
+    /// 88.合并两个有序数组
     func merge(_ nums1: inout [Int], _ m: Int, _ nums2: [Int], _ n: Int) {
         
         for i in m..<m+n {
@@ -571,6 +639,7 @@ class Solution {
         }
     }
     
+    /// 100.相同的树
     func isSameTree(_ p: TreeNode?, _ q: TreeNode?) -> Bool {
         if p?.val != q?.val {
             return false
@@ -582,6 +651,7 @@ class Solution {
         }
     }
     
+    /// 101.对称二叉树
     func isSymmetric(_ root: TreeNode?) -> Bool {
         if root == nil || (root?.left == nil && root?.right == nil) {
             return true
@@ -599,7 +669,7 @@ class Solution {
         return isSymmetric(left?.left, right?.right) && isSymmetric(left?.right, right?.left)
     }
     
-    /// 二叉树的最大深度
+    /// 104.二叉树的最大深度
     func maxDepth(_ root: TreeNode?) -> Int {
         guard let root = root else {
             return 0
