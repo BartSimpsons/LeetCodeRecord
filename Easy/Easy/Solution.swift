@@ -677,7 +677,32 @@ class Solution {
         return max(maxDepth(root.left), maxDepth(root.right)) + 1
     }
     
-    
+    /// 107.二叉树的层次遍历 II
+    func levelOrderBottom(_ root: TreeNode?) -> [[Int]] {
+        
+        var list = [[Int]]()
+        guard let root = root else { return list }
+        var queue = [TreeNode]()
+        queue.append(root)
+        while true {
+            var temp = [TreeNode]()
+            var tempList = [Int]()
+            while !queue.isEmpty {
+                let t = queue.removeFirst()
+                tempList.append(t.val)
+                if let l = t.left {
+                    temp.append(l)
+                }
+                if let r = t.right {
+                    temp.append(r)
+                }
+            }
+            list.insert(tempList, at: 0)
+            if temp.isEmpty { break }
+            queue = temp
+        }
+        return list
+    }
     
     /* 这是底线 */
 }
