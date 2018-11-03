@@ -704,6 +704,17 @@ class Solution {
         return list
     }
     
+    func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
+        if nums.count == 0 { return nil }
+        let mid = nums.count/2
+        let root = TreeNode.init(nums[mid])
+        let leftArr = [Int](nums[0..<mid])
+        let rightArr = [Int].init(nums[mid+1..<nums.count])
+        root.left = sortedArrayToBST(leftArr)
+        root.right = sortedArrayToBST(rightArr)
+        return root
+    }
+    
     /* 这是底线 */
 }
 
