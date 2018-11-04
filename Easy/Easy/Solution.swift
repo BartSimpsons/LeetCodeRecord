@@ -704,6 +704,7 @@ class Solution {
         return list
     }
     
+    /// 108.将有序数组转换为二叉搜索树
     func sortedArrayToBST(_ nums: [Int]) -> TreeNode? {
         if nums.count == 0 { return nil }
         let mid = nums.count/2
@@ -715,6 +716,26 @@ class Solution {
         return root
     }
     
+    /// 110.平衡二叉树 高度差啊！！
+    func isBalanced(_ root: TreeNode?) -> Bool {
+        
+        func getDepth(_ root: TreeNode?) -> Int {
+            guard let root = root else {
+                return 0
+            }
+            return max(getDepth(root.left), getDepth(root.right)) + 1
+        }
+        
+        guard let root = root else {
+            return true
+        }
+        /// 大方向 |left-right| > 1 则不合格
+        if abs(getDepth(root.left) - getDepth(root.right)) > 1 {
+            return false
+        }
+        /// 下一步 每个节点判断是否合格
+        return isBalanced(root.left) && isBalanced(root.right)
+    }
     /* 这是底线 */
 }
 
