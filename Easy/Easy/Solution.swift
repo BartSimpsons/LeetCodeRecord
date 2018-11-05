@@ -736,6 +736,21 @@ class Solution {
         /// 下一步 每个节点判断是否合格
         return isBalanced(root.left) && isBalanced(root.right)
     }
+    
+    /// 111.二叉树的最小深度
+    func minDepth(_ root: TreeNode?) -> Int {
+     
+        guard let root = root else {
+            return 0
+        }
+        if root.left == nil {
+            return minDepth(root.right) + 1
+        }
+        if root.right == nil {
+            return minDepth(root.left) + 1
+        }
+        return min(minDepth(root.left), minDepth(root.right)) + 1
+    }
     /* 这是底线 */
 }
 
