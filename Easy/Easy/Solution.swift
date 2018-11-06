@@ -751,6 +751,18 @@ class Solution {
         }
         return min(minDepth(root.left), minDepth(root.right)) + 1
     }
+    /// 112.路径总和
+    func hasPathSum(_ root: TreeNode?, _ sum: Int) -> Bool {
+        
+        guard let root = root else {
+            return false
+        }
+        let flag = sum - root.val
+        if root.left == nil && root.right == nil {
+            return flag == 0 ? true : false
+        }
+        return hasPathSum(root.left, flag) || hasPathSum(root.right, flag)
+    }
     /* 这是底线 */
 }
 
