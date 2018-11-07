@@ -763,6 +763,40 @@ class Solution {
         }
         return hasPathSum(root.left, flag) || hasPathSum(root.right, flag)
     }
+    
+    /// 118.杨辉三角
+    func generate(_ numRows: Int) -> [[Int]] {
+        var out = [[Int]]()
+        if numRows == 0 {
+            return out
+        }
+        for i in 0..<numRows {
+            
+            var arr = [Int].init(repeating: 1, count: i + 1)
+            if i > 1 {
+                for index in 1..<i {
+                    arr[index] = out[i-1][index-1] + out[i-1][index]
+                }
+            }
+            out.append(arr)
+        }
+        return out
+    }
+    
+    /// 杨辉三角
+    func getRow(_ rowIndex: Int) -> [Int] {
+        if rowIndex == 0 { return [1] }
+        var r = [Int](repeating: 0,count:rowIndex+1)
+        r[0] = 1
+        for i in 1...rowIndex {
+            var j = i
+            while j>=1 {
+                r[j] += r[j-1]
+                j -= 1
+            }
+        }
+        return r
+    }
     /* 这是底线 */
 }
 
