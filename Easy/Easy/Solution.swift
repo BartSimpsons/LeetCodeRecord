@@ -783,7 +783,7 @@ class Solution {
         return out
     }
     
-    /// 杨辉三角
+    /// 119.杨辉三角
     func getRow(_ rowIndex: Int) -> [Int] {
         if rowIndex == 0 { return [1] }
         var r = [Int](repeating: 0,count:rowIndex+1)
@@ -796,6 +796,37 @@ class Solution {
             }
         }
         return r
+    }
+    
+    /// 121.买卖股票的最佳时机
+    func maxProfit(_ prices: [Int]) -> Int {
+        
+        var money = 0
+        for i in 0..<prices.count {
+            for j in i+1..<prices.count {
+                let sub = prices[i] - prices[j]
+                if sub < money{
+                    money = sub
+                }
+            }
+        }
+        return -money
+    }
+    
+    func maxProfit2(_ prices: [Int]) -> Int {
+        if prices.count == 0 {
+            return 0
+        }
+        
+        var profit = 0
+        var buyPrice = prices[0]
+        
+        for i in 0..<prices.count {
+            let soldPrice = prices[i]
+            profit = max(profit, soldPrice - buyPrice)
+            buyPrice = min(buyPrice, soldPrice)
+        }
+        return profit
     }
     /* 这是底线 */
 }
