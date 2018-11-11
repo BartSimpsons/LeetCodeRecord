@@ -813,7 +813,7 @@ class Solution {
         return -money
     }
     
-    func maxProfit2(_ prices: [Int]) -> Int {
+    func maxProfitBest(_ prices: [Int]) -> Int {
         if prices.count == 0 {
             return 0
         }
@@ -827,6 +827,89 @@ class Solution {
             buyPrice = min(buyPrice, soldPrice)
         }
         return profit
+    }
+    
+    /// 122.买卖股票的最佳时机
+    func maxProfitOften(_ prices: [Int]) -> Int {
+        
+        if prices.count == 0 {
+            return 0
+        }
+        var money = 0
+        var buyPrice = prices[0]
+        for i in 1..<prices.count {
+            let soldPrice = prices[i]
+            if soldPrice > buyPrice {
+                money += soldPrice - buyPrice
+            }
+            buyPrice = soldPrice
+        }
+        return money
+    }
+    
+    func maxProfitOftenBest(_ prices: [Int]) -> Int {
+        var money = 0
+        guard prices.count > 1 else {
+            return money
+        }
+        for i in 1..<prices.count where prices[i] > prices[i-1] {
+            money += prices[i] - prices[i - 1]
+        }
+        return money
+    }
+    
+    /// 125.验证回文串
+    func isPalindrome(_ s: String) -> Bool {
+        
+        var res = s.lowercased()
+        var res1 = ""
+        for cha in res.unicodeScalars {
+            if cha.value >= 48 && cha.value <= 57 || cha.value >= 97 && cha.value <= 122{
+                res1 += String.init(cha)
+            }
+        }
+        res = String.init(res1.reversed())
+        return res == res1
+    }
+    
+    /// 136.只出现一次的数字
+    func singleNumber(_ nums: [Int]) -> Int {
+        var only = Dictionary<Int,Int>()
+        for num in nums {
+            if let _ = only[num] {
+                only.removeValue(forKey: num)
+            }else{
+                only[num] = num
+            }
+        }
+        return only.first!.value
+    }
+    
+    
+    /*
+     我们先了解一下位异或的运算法则吧：
+     
+     1、a^b = b^a。
+     
+     2、(a^b)^c = a^(b^c)。
+     
+     3、a^b^a = b。
+     
+     对于一个任意一个数n，它有几个特殊的性质：
+     
+     1、0^n = n。
+     
+     2、n^n = 0。
+     
+     3、1^n = !n。（即n==0时，则所得的值为真，当 n != 0，所得值为0，即为假）
+
+     */
+    func singleNumberBest(_ nums: [Int]) -> Int {
+        var result = 0
+        for i in nums {
+            result = result ^ i
+        }
+        return result
     }
     /* 这是底线 */
 }

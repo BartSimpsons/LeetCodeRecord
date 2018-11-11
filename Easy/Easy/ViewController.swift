@@ -14,7 +14,8 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 //        isBalanced()
-        maxProfit()
+//        maxProfit()
+        single()
     }
 
     /// 遇到一些思路不清晰的，需要一遍看执行一边想。没错这就是传说中的看着答案也弄不明白
@@ -34,6 +35,11 @@ class ViewController: UIViewController {
     func maxProfit(){
         
         Solution().maxProfit([7,1,5,3,6,4])
+    }
+    
+    /// 136
+    func single(){
+        Solution().singleNumberBest([5,3,3,4,5])
     }
     
     override func didReceiveMemoryWarning() {
