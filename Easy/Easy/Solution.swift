@@ -783,7 +783,7 @@ class Solution {
         return out
     }
     
-    /// 119.杨辉三角
+    /// 119.杨辉三角 II
     func getRow(_ rowIndex: Int) -> [Int] {
         if rowIndex == 0 { return [1] }
         var r = [Int](repeating: 0,count:rowIndex+1)
@@ -829,7 +829,7 @@ class Solution {
         return profit
     }
     
-    /// 122.买卖股票的最佳时机
+    /// 122.买卖股票的最佳时机 II
     func maxProfitOften(_ prices: [Int]) -> Int {
         
         if prices.count == 0 {
