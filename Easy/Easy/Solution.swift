@@ -911,6 +911,21 @@ class Solution {
         }
         return result
     }
+    
+    /// 167.两数之和 II - 输入有序数组
+    func twoSum167(_ numbers: [Int], _ target: Int) -> [Int] {
+        var result = [Int]()
+        if numbers.count == 0 { return result }
+        for i in 0..<numbers.count {
+            var sub = target - numbers[i]
+            for j in i+1..<numbers.count {
+                if numbers[j] == sub {
+                    result = [i+1, j+1]
+                }
+            }
+        }
+        return result
+    }
     /* 这是底线 */
 }
 
