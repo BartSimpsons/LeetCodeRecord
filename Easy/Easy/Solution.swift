@@ -926,6 +926,46 @@ class Solution {
         }
         return result
     }
+    
+    /// 169.求众数
+    func majorityElement(_ nums: [Int]) -> Int {
+        
+        var result = 0
+        var dic = [Int:Int]()
+        for num in nums {
+            if let count = dic[num] {
+                dic[num] = count + 1
+            }else{
+                dic[num] = 1
+            }
+            if dic[num]! > nums.count/2 {
+                result = num
+            }
+        }
+        return result
+    }
+    
+    func majorityElementBest(_ nums: [Int]) -> Int {
+        
+        var curNum = nums[0]
+        var majority = 0;
+        for num in 0..<nums.count {
+            let val = nums[num]
+            if curNum != val {
+                majority -= 1
+                if majority < 1 {
+                    curNum = val
+                    majority = 1
+                }
+            } else {
+                majority += 1
+            }
+        }
+        return curNum;
+    }
+    
+    ///暂歇一日
+    
     /* 这是底线 */
 }
 
