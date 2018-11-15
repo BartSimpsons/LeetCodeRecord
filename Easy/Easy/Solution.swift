@@ -865,6 +865,7 @@ class Solution {
         var res1 = ""
         for cha in res.unicodeScalars {
             if cha.value >= 48 && cha.value <= 57 || cha.value >= 97 && cha.value <= 122{
+            
                 res1 += String.init(cha)
             }
         }
@@ -966,6 +967,20 @@ class Solution {
     
     ///暂歇一日
     
+    /// 168.Excel表列名称 16ms 击败83.3%
+    func convertToTitle(_ n: Int) -> String {
+        
+        var n = n
+        var r = ""
+        while n != 0 {
+            let c:Int = (n-1) % 26
+            let t = UnicodeScalar.init(c+65)
+            r = r + String.init(t!)
+            n = (n-1)/26
+        }
+        return String.init(r.reversed())
+        
+    }
     /* 这是底线 */
 }
 
