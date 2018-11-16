@@ -979,7 +979,21 @@ class Solution {
             n = (n-1)/26
         }
         return String.init(r.reversed())
+    }
+    
+    /// 169.Excel表列序号 16ms Swift提交中击败了100.00% 的用户
+    func titleToNumber(_ s: String) -> Int {
         
+        var s = s
+        var result = 0
+        for i in 0..<s.count {
+            
+            let last = s.removeLast()
+            let a = (last.unicodeScalars.first?.value)! - 64
+            let r = pow(26, Double(i)) * Double(a)
+            result += Int(r)
+        }
+        return result
     }
     /* 这是底线 */
 }
