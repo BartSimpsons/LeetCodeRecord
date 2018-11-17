@@ -995,6 +995,22 @@ class Solution {
         }
         return result
     }
+    
+    /// 172.阶乘后的零
+    func trailingZeroes(_ n: Int) -> Int {
+        
+        var n = n
+        var count:Int = 0
+        while n != 0{
+            n /= 5
+            count += n
+        }
+        return count
+    }
+    
+    
+    
+    
     /* 这是底线 */
 }
 
