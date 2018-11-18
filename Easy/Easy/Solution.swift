@@ -1008,7 +1008,29 @@ class Solution {
         return count
     }
     
+    /// 189.旋转数组
+    func rotate(_ nums: inout [Int], _ k: Int) {
+        guard nums.count > 0 else {
+            return
+        }
+        for _ in 0..<k {
+            let last = nums.removeLast()
+            nums.insert(last, at: 0)
+        }
+    }
     
+    func rotate2(_ nums: inout [Int], _ k: Int) {
+        guard nums.count > 0 else {
+            return
+        }
+        let cou = k % nums.count
+        guard cou != 0 else {
+            return
+        }
+        let last = nums[nums.count-cou..<nums.count]
+        nums.removeSubrange(nums.count-cou..<nums.count)
+        nums.insert(contentsOf: [Int].init(last), at: 0)
+    }
     
     
     /* 这是底线 */
