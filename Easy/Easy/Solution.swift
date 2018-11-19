@@ -1032,6 +1032,30 @@ class Solution {
         nums.insert(contentsOf: [Int].init(last), at: 0)
     }
     
+    /// 202
+    func isHappy(_ n: Int) -> Bool {
+     
+        func isOne(_ n: Int) -> Int {
+            var input = n
+            var output = 0
+            while input != 0 {
+                output += (input % 10) * (input % 10)
+                input /= 10
+            }
+            return output
+        }
+        
+        var ans = n
+        var s = Set<Int>()
+        while true {
+            if ans == 1 { return true }
+            if s.contains(ans) { return false }
+            s.insert(ans)
+            ans = isOne(ans)
+        }
+    }
+    
+    
     
     /* 这是底线 */
 }
