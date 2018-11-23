@@ -1032,7 +1032,7 @@ class Solution {
         nums.insert(contentsOf: [Int].init(last), at: 0)
     }
     
-    /// 202
+    /// 202.快乐数
     func isHappy(_ n: Int) -> Bool {
      
         func isOne(_ n: Int) -> Int {
@@ -1054,6 +1054,64 @@ class Solution {
             ans = isOne(ans)
         }
     }
+    
+    /// 三数之和
+    func threeSum(_ nums: [Int]) -> [[Int]] {
+        
+        var nums = nums.sorted()
+        var result = [[Int]]()
+        
+        for i in 0..<nums.count {
+            /// 因为已经从小到大排序，i大于0则后面的数相加肯定大于0
+            if nums[i] > 0 { break }
+            /// 去重
+            if i > 0 && nums[i] == nums[i-1] { continue }
+            var low = i + 1
+            var high = nums.count - 1
+            
+            while low < high {
+                
+                if nums[low] + nums[high] + nums[i] == 0 {
+                    
+                    result.append([nums[i], nums[low], nums[high]])
+
+                    while low < high && nums[low] == nums[low+1]{
+                        low += 1
+                    }
+                    while low < high && nums[high] == nums[high-1] {
+                        high -= 1
+                    }
+                    low += 1
+                    high -= 1
+                }else if nums[low] + nums[high] + nums[i] > 0 {
+                    high -= 1
+                }else {
+                    low += 1
+                }
+            }
+        }
+        return result
+    }
+    
+    /// 217.存在重复元素
+    func containsDuplicate(_ nums: [Int]) -> Bool {
+        guard nums.count > 0 else{
+            return false
+        }
+        var nums = nums.sorted()
+        for i in 0..<nums.count-1 {
+            if nums[i] == nums[i+1] {
+                return true
+            }
+        }
+        return false
+    }
+    
+    func containsDuplicateBest(_ nums: [Int]) -> Bool {
+        
+        return nums.count != Set.init(nums).count
+    }
+    
     
     
     
