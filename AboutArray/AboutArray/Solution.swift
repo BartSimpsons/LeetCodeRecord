@@ -108,4 +108,42 @@ class Solution: NSObject {
         return close
     }
     
+    /// 18.四数之和
+    func fourSum(_ nums: [Int], _ target: Int) -> [[Int]] {
+        var result = [[Int]]()
+        if nums.count < 4 {
+            return result
+        }
+        var nums = nums.sorted()
+        for i in 0..<nums.count-1 {
+            if target > 0 && nums[i] > target { break }
+            if target < 0 && nums[i] > 0 { break }
+            if i > 0 && nums[i] == nums[i-1] { continue }
+            
+            for j in i+1..<nums.count {
+                
+                if target > 0 && nums[i] + nums[j] > target { break }
+                if target < 0 && nums[i] + nums[j] > 0 { break }
+                if j > i+1 && nums[j] == nums[j-1] { continue }
+                
+                var l = j + 1, r = nums.count - 1
+                while l < r {
+                    
+                    let sum = nums[i] + nums[j] + nums[l] + nums[r]
+                    if sum == target {
+                        result.append([nums[i], nums[j], nums[l], nums[r]])
+                        while l < r && nums[l] == nums[l+1] { l += 1 }
+                        while l < r && nums[r] == nums[r-1] { r -= 1 }
+                        l += 1
+                        r -= 1
+                    }else if sum < target {
+                        l += 1
+                    }else{
+                        r -= 1
+                    }
+                }
+            }
+        }
+        return result
+    }
 }
