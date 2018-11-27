@@ -146,4 +146,31 @@ class Solution: NSObject {
         }
         return result
     }
+    
+    
+    /// 268.缺失数字
+    func missingNumber(_ nums: [Int]) -> Int {
+        
+        let nums = nums.sorted()
+        for (index,num) in nums.enumerated() {
+            if index != num {
+                return index
+            }
+        }
+        return nums.count
+    }
+    
+    func missingNumberBest(_ nums: [Int]) -> Int {
+        
+        var lost = 0
+        /// 序列相加 0+1+2+...n  - 所有的数相加 = 漏掉的数
+        for i in 0...nums.count {
+            
+            lost += i
+            if i < nums.count {
+                lost -= nums[i]
+            }
+        }
+        return lost
+    }
 }
