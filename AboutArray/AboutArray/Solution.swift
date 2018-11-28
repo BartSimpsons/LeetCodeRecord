@@ -147,6 +147,13 @@ class Solution: NSObject {
         return result
     }
     
+    /// 33.搜索旋转排序数组
+    func search(_ nums: [Int], _ target: Int) -> Int {
+        
+        /// 二分法来做  暂歇一天
+        return 0
+    }
+    
     
     /// 268.缺失数字
     func missingNumber(_ nums: [Int]) -> Int {
