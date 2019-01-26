@@ -149,12 +149,130 @@ class Solution: NSObject {
     
     /// 33.搜索旋转排序数组
     func search(_ nums: [Int], _ target: Int) -> Int {
-        
-        /// 二分法来做  暂歇一天
-        return 0
+        /// 二分法来做
+        if nums.count < 1 { return -1 }
+        var left = 0
+        var right = nums.count - 1
+        while left <= right {
+            let mid = left + (right - left) / 2
+            if nums[mid] == target { return mid }
+            
+            if nums[mid] >= nums[left] {
+                if target < nums[mid] && target >= nums[left] {
+                    right = mid - 1
+                }else {
+                    left = mid + 1
+                }
+            }
+            
+            if nums[mid] <= nums[right] {
+                if target > nums[mid] && target <= nums[right] {
+                    left = mid + 1
+                }else {
+                    right = mid - 1
+                }
+            }
+        }
+        return -1
     }
     
+    /// 34. 在排序数组中查找元素的第一个和最后一个位置
+    func searchRange(_ nums: [Int], _ target: Int) -> [Int] {
+        
+        var left = 0, right = nums.count
+        var mid = (left + right) / 2
+        
+        var p = -1
+        while left < right {
+            if nums[mid] == target {
+                p = mid
+                break
+            }
+            
+            if nums[mid] > target {
+                if right == mid { break }
+                right = mid
+                mid = (left + right) / 2
+            }else{
+                if left == mid { break }
+                left = mid
+                mid = (left + right) / 2
+            }
+        }
+        
+        if p == -1 {
+            return [-1, -1]
+        }else{
+            var fisrt = p, last = p
+            while fisrt > 0 && nums[fisrt - 1] == target {
+                fisrt -= 1
+            }
+            while last < nums.count - 1 && nums[last + 1] == target {
+                last += 1
+            }
+            return [fisrt, last]
+        }
+    }
     
+    /// 39. 组合总和
+    func combinationSum(_ candidates: [Int], _ target: Int) -> [[Int]] {
+        
+        func helper(_ tmp:inout [Int], res:inout [[Int]], index:Int, candidatesCopy:[Int], target:Int){
+            
+            if target == 0 {
+                res.append(tmp)
+                return
+            }else if index == candidatesCopy.count {
+                return
+            }
+            
+            for i in index..<candidatesCopy.count {
+                if candidatesCopy[i] > target{
+                    return
+                }else if i != index && candidatesCopy[i] == candidatesCopy[i - 1] {
+                    continue
+                }
+                tmp.append(candidatesCopy[i])
+                helper(&tmp, res: &res, index: i, candidatesCopy: candidatesCopy, target: target - candidatesCopy[i])
+                tmp.removeLast()
+            }
+        }
+        
+        let can = candidates.sorted()
+        var tmp = [Int]()
+        var res = [[Int]]()
+        let index = 0
+        helper(&tmp, res: &res, index: index, candidatesCopy: can, target: target)
+        return res
+    }
+    
+    /// 48. 旋转图像 12ms
+    func rotate(_ matrix: inout [[Int]]) {
+        let n = matrix.count
+        
+        for layer in 0..<n/2 {
+            let start = layer, end = n - layer - 1
+            for i in start..<end {
+                let offset = i - start
+                
+                (matrix[start][i], matrix[i][end], matrix[end][end - offset], matrix[end - offset][start]) = (matrix[end - offset][start], matrix[start][i], matrix[i][end], matrix[end][end - offset])
+            }
+        }
+    }
+    
+    /// 傻子解法
+    func rotateForIdiot(_ matrix: inout [[Int]]) {
+        var out = [[Int]]()
+        while matrix[0].count != 0 {
+            
+            var res = [Int]()
+            for i in 0..<matrix.count {
+                res.insert(matrix[i].removeFirst(), at: 0)
+            }
+            out.append(res)
+        }
+        matrix = out
+    }
     /// 268.缺失数字
     func missingNumber(_ nums: [Int]) -> Int {
         
