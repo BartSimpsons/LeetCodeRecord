@@ -273,6 +273,114 @@ class Solution: NSObject {
         }
         matrix = out
     }
+    
+    /// 54.螺旋矩阵
+    func spiralOrder(_ matrix: [[Int]]) -> [Int] {
+        var res = [Int]()
+        if (matrix.count == 0) {
+            return res
+        }
+        var startX = 0
+        var endX = matrix.count - 1
+        var startY = 0
+        var endY = matrix[0].count - 1
+        
+        while(true) {
+            for i in startY...endY {
+                res.append(matrix[startX][i])
+            }
+            startX += 1
+            if (startX > endX) {
+                break
+            }
+            
+            for i in startX...endX {
+                res.append(matrix[i][endY])
+            }
+            endY -= 1
+            if (endY < startY) {
+                break
+            }
+            
+            /// stride 函数返回一个任意可变步长 类型值的序列
+            /// from，through，最后一个值将会小(大)于等于through的值
+            for i in stride(from: endY, through:startY, by:-1) {
+                res.append(matrix[endX][i])
+            }
+            endX -= 1
+            if (endX < startX) {
+                break
+            }
+            for i in stride(from:endX, through:startX, by:-1) {
+                res.append(matrix[i][startY])
+            }
+            startY += 1
+            if (startY > endY) {
+                break
+            }
+        }
+        return res
+    }
+    
+    /// 55.跳跃游戏
+    func canJump(_ nums: [Int]) -> Bool {
+        var maxreach = 0
+        for i in 0..<nums.count {
+            if i > maxreach {
+                return false
+            }
+            maxreach = max(maxreach, i + nums[i])
+            if maxreach >= nums.count {
+                return true
+            }
+        }
+        return true
+    }
+    
+    /// 59.螺旋矩阵II
+    func generateMatrix(_ n: Int) -> [[Int]] {
+        guard n > 0 else { return [[Int]]() }
+        
+        var num = 1
+        var result = [[Int]].init(repeating: [Int].init(repeating: 0, count: n), count: n)
+        
+        for layer in 0..<n/2 {
+            let start = layer
+            let end = n - layer - 1
+            
+            // top 不包含右上角
+            for i in start..<end {
+                result[start][i] = num
+                num += 1
+            }
+            
+            // right 不包含右下角
+            for i in start..<end {
+                result[i][end] = num
+                num += 1
+            }
+            
+            // bottom 不包含左下角 stride(from: 2, to: 0, by: -1) to语法 2..>0 不包括0
+            for i in stride(from: end, to: start, by: -1) {
+                result[end][i] = num
+                num += 1
+            }
+            
+            // left 不包左上角
+            for i in stride(from: end, to: start, by: -1) {
+                result[i][start] = num
+                num += 1
+            }
+        }
+        
+        // handle the center one
+        if n % 2 != 0 {
+            result[n/2][n/2] = n * n
+        }
+        
+        return result
+    }
+    
     /// 268.缺失数字
     func missingNumber(_ nums: [Int]) -> Int {
         
@@ -298,4 +406,6 @@ class Solution: NSObject {
         }
         return lost
     }
+    
+    /*这是底线*/
 }
